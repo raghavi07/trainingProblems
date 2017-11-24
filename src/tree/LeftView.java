@@ -49,31 +49,6 @@ public class LeftView {
 		display(root.left, depth + 1);
 	}
 	
-	public static void printLeftView (Node root) {
-		
-		if(root == null) {
-			return;
-		}
-		System.out.print(" "+root.data);
-		
-		for (int i=0;i<height(root);i++) {
-		
-			for (int j=0;j<i;j++) {
-				root = root.left!=null?root.left:root.right;
-				if(root.right==null) {
-					
-				}
-			}
-		if (root.left!=null) {
-			System.out.print(" "+root.left.data);
-		}
-		else if (root.right!=null)
-		{
-			System.out.print(" "+root.right.data);
-		}
-		}		
-	}
-	
 	public static Map<Integer, Integer> leftView(Node root, Map<Integer, Integer> hp, int count) {
 		if (root == null) {
 			return hp;
@@ -98,55 +73,22 @@ public class LeftView {
 		return hp;
 	}
 	
-	public static Map<Integer, Integer> topRightView(Node root, Map<Integer, Integer> hp, int count) {
+	public static Map<Integer, Integer> topView(Node root, Map<Integer, Integer> hp, int count) {
 		if (root == null) {
 			return hp;
 		}
-		
-		topRightView(root.right, hp, count + 1);
 		if(!hp.containsKey(count)) {
-			hp.put(count, root.data);
+		hp.put(count, root.data);
 		}
-		//topView(root.left, hp, count + 1);
+		topView(root.left, hp, count - 1);
+		topView(root.right, hp, count + 1);
 		return hp;
 	}
-	
-	public static Map<Integer, Integer> topLeftView(Node root, Map<Integer, Integer> hp, int count) {
-		if (root == null) {
-			return hp;
-		}
-		
-		topLeftView(root.left, hp, count + 1);
-		if(!hp.containsKey(count)) {
-			hp.put(count, root.data);
-		}
-		//topView(root.left, hp, count + 1);
-		return hp;
-	}
-	
-/*	public static List<Integer> bottomView(Node root, List<Integer> li) {
-		
-		if(root == null) {
-			return li;
-		}
-		
-		if (root.left == null && root.right == null ) {
-			li.add(root.data);
-			return li;
-		}
-		
-		bottomView(root.left, li);
-		bottomView(root.right, li);
-		return li;
-	}*/
 	
 	public static Map<Integer, Integer> bottomView(Node root, Map<Integer, Integer> hp, int count) {
 		if (root == null) {
 			return hp;
 		}
-		//if(!hp.containsKey(count)) {
-		
-		//}
 		hp.put(count, root.data);
 		bottomView(root.left, hp, count - 1);
 		bottomView(root.right, hp, count + 1);
@@ -177,23 +119,24 @@ public class LeftView {
 		}
 		treeObj.display(treeObj.root, 0);
 		Map<Integer,Integer> hp = new HashMap<Integer,Integer>();
-		//int hight = height(treeObj.root);
+		// Left View
 		hp = leftView (treeObj.root,hp,0);
 		System.out.println("\nLeftView -> ");
 		printView(hp);
+		
+		// Right View
 		hp=new HashMap<Integer,Integer>();
 		hp = rightView (treeObj.root,hp,0);
 		System.out.println("\nRightView -> ");
 		printView(hp);
+		
+		// Top View
 		hp=new HashMap<Integer,Integer>();
-		hp = topRightView (treeObj.root,hp,0);
-		//System.out.println(hp);
-		hp = topLeftView (treeObj.root.left,hp,hp.size());
+		hp = topView (treeObj.root,hp,0);
 		System.out.println("\nTopView -> ");
 		printView(hp);
-		/*List<Integer> li=new ArrayList<Integer>();
-		li = bottomView (treeObj.root,li,0);
-		System.out.println("\nBottomView -> "+li);*/
+		
+		// Bottom View
 		hp=new HashMap<Integer,Integer>();
 		hp = bottomView (treeObj.root,hp,0);
 		System.out.println("\nBottomView -> ");
